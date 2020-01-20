@@ -14,3 +14,17 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+# All authenticated users
+# /account/*
+Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
+    // User Dashboard
+    Route::get('/', 'AccountController@index');
+    // GUI single page planner
+    Route::get('planner', 'AccountController@planner');
+
+});
