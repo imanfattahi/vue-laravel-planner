@@ -2101,6 +2101,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2118,14 +2126,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      index: '',
+      index: "",
       edit: false,
       plan: {
         start: null,
         end: null,
-        title: '',
-        content: '',
-        "class": ''
+        title: "",
+        content: "",
+        "class": ""
       },
       planModal: false,
       plans: []
@@ -2135,44 +2143,52 @@ __webpack_require__.r(__webpack_exports__);
     // get all plans
     getPlans: function getPlans() {
       var self = this;
-      self.$http.post('/account/planner/all').then(function (response) {
+      self.$http.post("/account/planner/all").then(function (response) {
         if (response.status = 200) {
           self.plans = JSON.parse(response.data);
         } else {
-          throw new Error('Somthing went wrong!');
+          throw new Error("Somthing went wrong!");
         }
       })["catch"](function (e) {
         console.error(e);
-        self.$toasted.show('Somthing went wrong!', {
+        self.$toasted.show("Somthing went wrong!", {
           duration: 1500,
-          type: 'info'
+          type: "info"
         });
       });
     },
     // save plan changes
     setPlan: function setPlan() {
       var self = this;
-      self.plan.end = window.moment(self.plan.start, 'YYYY-MM-DD HH:mm').add('hours', 1).format('YYYY-MM-DD HH:mm');
-      if (!self.edit) self.plans.push(self.plan);
-      self.$http.post('/account/planner/set', {
-        plans: self.plans
-      }).then(function (response) {
-        if (response.status = 200) {
-          self.planModal = false;
-          self.$toasted.show('Plan was set successfuly!', {
-            duration: 1500,
-            type: 'success'
-          });
-        } else {
-          throw new Error('Somthing went wrong!');
+      self.plan.end = window.moment(self.plan.start, "YYYY-MM-DD HH:mm").add("hours", 1).format("YYYY-MM-DD HH:mm");
+
+      if (self.validate()) {
+        if (!self.edit) {
+          self.plans.push(self.plan);
         }
-      })["catch"](function (e) {
-        console.error(e);
-        self.$toasted.show('Somthing went wrong!', {
-          duration: 1500,
-          type: 'info'
+
+        self.$http.post("/account/planner/set", {
+          plans: self.plans
+        }).then(function (response) {
+          if (response.status = 200) {
+            self.planModal = false;
+            self.$toasted.show("Plan was set successfuly!", {
+              duration: 1500,
+              type: "success"
+            });
+          } else {
+            throw new Error("Somthing went wrong!");
+          }
+        })["catch"](function (e) {
+          console.error(e);
+          self.$toasted.show("Somthing went wrong!", {
+            duration: 1500,
+            type: "info"
+          });
         });
-      });
+      } else {
+        alert("Validation error!");
+      }
     },
     // Delete selected plan
     deletePlan: function deletePlan() {
@@ -2201,12 +2217,21 @@ __webpack_require__.r(__webpack_exports__);
       this.plan = {
         start: null,
         end: null,
-        title: '',
-        content: '',
-        "class": ''
+        title: "",
+        content: "",
+        "class": ""
       };
-      self.edit = false;
+      this.edit = false;
       this.planModal = true;
+    },
+    validate: function validate() {
+      if (!this.plan.start || !this.plan.end || !this.plan.title || !this.plan["class"]) return false;
+      if (!this.validateDate(this.plan.start) || !this.validateDate(this.plan.end)) return false;
+      return true;
+    },
+    validateDate: function validateDate(date) {
+      var regex = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/gm;
+      return regex.test(date);
     }
   }
 });
@@ -7602,7 +7627,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\n#title {\n    line-height: 40px;\n    margin: 0;\n}\n\n/*  todo => Is better to seprated it to file */\n/* Clanedar Green-theme. */\n.vuecal__menu, .vuecal__cell-events-count {background-color: #42b983;}\n.vuecal__menu button {border-bottom-color: #fff;color: #fff;}\n.vuecal__menu button.active {background-color: rgba(255, 255, 255, 0.15);}\n.vuecal__title-bar {background-color: #e4f5ef;}\n.vuecal__cell.today, .vuecal__cell.current {background-color: rgba(240, 240, 255, 0.4);}\n.vuecal:not(.vuecal--day-view) .vuecal__cell.selected {background-color: rgba(235, 255, 245, 0.4);}\n.vuecal__cell.selected:before {border-color: rgba(66, 185, 131, 0.5);}\n\n/* Different color for different event types. */\n.vuecal__event.black {\n    background-color: black;\n    border: 1px solid black;\n    color: #fff;\n}\n.vuecal__event.white {\n    background-color: white;\n    border: 1px solid white;\n    color: #000;\n}\n.vuecal__event.lightgray {\n    background-color: lightgray;\n    border: 1px solid lightgray;\n    color: #000;\n}\n.vuecal__event.red {\n    background-color: red;\n    border: 1px solid red;\n    color: #fff;\n}\n.vuecal__event.blue {\n    background-color: blue;\n    border: 1px solid blue;\n    color: #fff;\n}\n.vuecal__event.green {\n    background-color: green;\n    border: 1px solid green;\n    color: #fff;\n}\n.vuecal__event.purple {\n    background-color: purple;\n    border: 1px solid purple;\n    color: #fff;\n}\n.vuecal__event.yellow {\n    background-color: yellow;\n    border: 1px solid yellow;\n    color: #000;\n}\n.vuecal__event.lime {\n    background-color: lime;\n    border: 1px solid lime;\n    color: #000;\n}\n\n", ""]);
+exports.push([module.i, "\n#title {\n  line-height: 40px;\n  margin: 0;\n}\n\n/*  todo => Is better to seprated it to file */\n/* Clanedar Green-theme. */\n.vuecal__menu,\n.vuecal__cell-events-count {\n  background-color: #42b983;\n}\n.vuecal__menu button {\n  border-bottom-color: #fff;\n  color: #fff;\n}\n.vuecal__menu button.active {\n  background-color: rgba(255, 255, 255, 0.15);\n}\n.vuecal__title-bar {\n  background-color: #e4f5ef;\n}\n.vuecal__cell.today,\n.vuecal__cell.current {\n  background-color: rgba(240, 240, 255, 0.4);\n}\n.vuecal:not(.vuecal--day-view) .vuecal__cell.selected {\n  background-color: rgba(235, 255, 245, 0.4);\n}\n.vuecal__cell.selected:before {\n  border-color: rgba(66, 185, 131, 0.5);\n}\n\n/* Different color for different event types. */\n.vuecal__event.black {\n  background-color: black;\n  border: 1px solid black;\n  color: #fff;\n}\n.vuecal__event.white {\n  background-color: white;\n  border: 1px solid white;\n  color: #000;\n}\n.vuecal__event.lightgray {\n  background-color: lightgray;\n  border: 1px solid lightgray;\n  color: #000;\n}\n.vuecal__event.red {\n  background-color: red;\n  border: 1px solid red;\n  color: #fff;\n}\n.vuecal__event.blue {\n  background-color: blue;\n  border: 1px solid blue;\n  color: #fff;\n}\n.vuecal__event.green {\n  background-color: green;\n  border: 1px solid green;\n  color: #fff;\n}\n.vuecal__event.purple {\n  background-color: purple;\n  border: 1px solid purple;\n  color: #fff;\n}\n.vuecal__event.yellow {\n  background-color: yellow;\n  border: 1px solid yellow;\n  color: #000;\n}\n.vuecal__event.lime {\n  background-color: lime;\n  border: 1px solid lime;\n  color: #000;\n}\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -70256,11 +70281,7 @@ var render = function() {
       _vm.planModal
         ? _c("modal", { attrs: { large: true, hcolor: "rgb(255, 205, 46)" } }, [
             _c("h5", { attrs: { slot: "title" }, slot: "title" }, [
-              _vm._v(
-                "\n            " +
-                  _vm._s(this.edit === true ? "Edit Plan" : "Set New Plan") +
-                  "\n        "
-              )
+              _vm._v(_vm._s(this.edit === true ? "Edit Plan" : "Set New Plan"))
             ]),
             _vm._v(" "),
             _c("div", { attrs: { slot: "body" }, slot: "body" }, [
@@ -70392,7 +70413,7 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("\n            Set Plan\n        ")]
+                  [_vm._v("Set Plan")]
                 ),
                 _vm._v(" "),
                 _vm.edit
@@ -70408,7 +70429,7 @@ var render = function() {
                           }
                         }
                       },
-                      [_vm._v("\n            Delete\n        ")]
+                      [_vm._v("Delete")]
                     )
                   : _vm._e(),
                 _vm._v(" "),
@@ -70423,7 +70444,7 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v("\n            Cancel\n        ")]
+                  [_vm._v("Cancel")]
                 )
               ]
             )
@@ -83804,7 +83825,7 @@ Vue.use(vue_persian_datetime_picker__WEBPACK_IMPORTED_MODULE_2___default.a, {
   props: {
     inputFormat: 'YYYY-MM-DD HH:mm',
     format: 'YYYY-MM-DD HH:mm',
-    editable: true,
+    editable: false,
     inputClass: 'form-control',
     placeholder: 'Select date',
     altFormat: 'YYYY-MM-DD HH:mm',

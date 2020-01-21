@@ -39,7 +39,7 @@ Vue.use(VuePersianDatetimePicker, {
     props: {
         inputFormat: 'YYYY-MM-DD HH:mm',
         format: 'YYYY-MM-DD HH:mm',
-        editable: true,
+        editable: false,
         inputClass: 'form-control',
         placeholder: 'Select date',
         altFormat: 'YYYY-MM-DD HH:mm',
